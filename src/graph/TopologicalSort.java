@@ -56,7 +56,7 @@ public class TopologicalSort {
                 inDegree.put(dependent, inDegree.get(dependent) - 1);
                 if (inDegree.get(dependent) == 0) {
                     queue.add(dependent);
-                    System.out.printf("         → \"%s\" siap dipelajari (in-degree jadi 0)%n",
+                    System.out.printf("         > \"%s\" siap dipelajari (in-degree jadi 0)%n",
                             graph.getTopic(dependent).getTitle());
                 }
             }

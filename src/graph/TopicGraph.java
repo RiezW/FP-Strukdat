@@ -114,7 +114,7 @@ public class TopicGraph {
         for (String id : adjacencyList.keySet()) {
             Topic t = topics.get(id);
             List<String> deps = adjacencyList.get(id);
-            System.out.printf("  %-35s → ", t.getTitle());
+            System.out.printf("  %-35s > ", t.getTitle());
             if (deps.isEmpty()) {
                 System.out.print("[tidak ada dependen]");
             } else {

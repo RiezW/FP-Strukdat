@@ -49,7 +49,7 @@ public class DFSTraversal {
         order.remove(topicId);
 
         if (order.isEmpty()) {
-            System.out.println("  → Topik ini tidak memiliki prasyarat.");
+            System.out.println("  > Topik ini tidak memiliki prasyarat.");
         } else {
             System.out.println("  Urutan prasyarat yang harus dipelajari lebih dulu:");
             Collections.reverse(order); // tampilkan dari yang paling dasar
@@ -92,7 +92,7 @@ public class DFSTraversal {
 
         visited.remove(topicId); // hapus dirinya sendiri
         if (visited.isEmpty()) {
-            System.out.println("  → Tidak ada topik yang bergantung pada topik ini.");
+            System.out.println("  Tidak ada topik yang bergantung pada topik ini.");
         }
     }
 
@@ -101,7 +101,7 @@ public class DFSTraversal {
         List<String> dependents = graph.getDependents(topicId);
         for (String dep : dependents) {
             Topic t = graph.getTopic(dep);
-            System.out.printf("%s→ %s%n", indent, t.getTitle());
+            System.out.printf("%s> %s%n", indent, t.getTitle());
             if (!visited.contains(dep)) {
                 dfsForward(dep, visited, indent + "  ", false);
             }
