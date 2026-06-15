@@ -1,0 +1,26 @@
+id,title,category,description,prerequisites
+T01,Pengantar Pemrograman,Dasar,Konsep dasar pemrograman,
+T02,Variabel dan Tipe Data,Dasar,"Int, float, string, boolean",T01
+T03,Operator dan Ekspresi,Dasar,"Aritmatika, logika, relasional","T01,T02"
+T04,Struktur Kontrol,Dasar,"If-else, switch","T02,T03"
+T05,Perulangan (Loop),Dasar,"For, while, do-while",T04
+T06,Array dan String,Menengah,"Array 1D, 2D, manipulasi string","T02,T05"
+T07,Fungsi dan Prosedur,Menengah,"Deklarasi, parameter, return value",T04
+T08,Rekursi,Menengah,"Base case, recursive case","T07,T06"
+T09,Pointer dan Memori,Menengah,"Pointer, heap, stack","T02,T07"
+T10,OOP - Dasar,Menengah,"Class, object, method",T07
+T11,OOP - Inheritance,Menengah,"Extends, super, override",T10
+T12,OOP - Polymorphism,Lanjut,"Overloading, overriding, abstract",T11
+T13,OOP - Interface & Abstract,Lanjut,"Interface, abstract class","T11,T12"
+T14,Algoritma Sorting,Menengah,"Bubble, selection, insertion, merge","T06,T07"
+T15,Algoritma Searching,Menengah,"Linear search, binary search",T06
+T16,Kompleksitas Algoritma,Lanjut,Big O notation,"T14,T15"
+T17,Struktur Data - Stack & Queue,Menengah,"LIFO, FIFO","T09,T07"
+T18,Struktur Data - Linked List,Menengah,"Single, double, circular","T09,T17"
+T19,Struktur Data - Tree,Lanjut,"BST, AVL, traversal","T18,T08"
+T20,Struktur Data - Graph,Lanjut,"Adjacency list/matrix, DFS, BFS","T19,T17"
+T21,Dynamic Programming,Lanjut,"Memoization, tabulation","T08,T16"
+T22,Greedy Algorithm,Lanjut,"Greedy choice, optimal substructure","T16,T14"
+T23,Divide and Conquer,Lanjut,"Merge sort, quick sort, binary search","T08,T14"
+T24,Pemrograman Fungsional,Lanjut,"Lambda, higher-order function","T10,T07"
+T25,Design Patterns,Lanjut,"Singleton, Factory, Observer, MVC","T13,T10"
