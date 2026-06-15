@@ -7,21 +7,21 @@ import java.util.*;
 
 /**
  * ╔══════════════════════════════════════════════════════════╗
- * ║         LIBRARY KNOWLEDGE NAVIGATOR                     ║
- * ║         Final Project — Struktur Data                   ║
+ * ║ LIBRARY KNOWLEDGE NAVIGATOR ║
+ * ║ Final Project — Struktur Data ║
  * ╚══════════════════════════════════════════════════════════╝
  *
  * Sistem pencarian topik dan rekomendasi urutan belajar
  * berdasarkan hubungan prasyarat antar materi.
  *
  * Struktur Data:
- *   - Trie         → Pencarian topik berdasarkan prefix
- *   - Graph (AL)   → Hubungan prasyarat antar topik (directed)
+ * - Trie → Pencarian topik berdasarkan prefix
+ * - Graph (AL) → Hubungan prasyarat antar topik (directed)
  *
  * Algoritma:
- *   - DFS              → Menelusuri hubungan prasyarat
- *   - Topological Sort → Rekomendasi urutan belajar
- *   - Cycle Detection  → Mendeteksi siklus prasyarat
+ * - DFS → Menelusuri hubungan prasyarat
+ * - Topological Sort → Rekomendasi urutan belajar
+ * - Cycle Detection → Mendeteksi siklus prasyarat
  */
 public class Main {
 
@@ -48,12 +48,25 @@ public class Main {
             String input = scanner.nextLine().trim();
 
             switch (input) {
-                case "1": featureSearchByPrefix();    break;
-                case "2": featureShowPrerequisites(); break;
-                case "3": featureLearningOrder();     break;
-                case "4": featureDetectCycle();       break;
-                case "5": featureDisconnectedTopics();break;
-                case "6": graph.displayGraph(); trie.displayAll(); break;
+                case "1":
+                    featureSearchByPrefix();
+                    break;
+                case "2":
+                    featureShowPrerequisites();
+                    break;
+                case "3":
+                    featureLearningOrder();
+                    break;
+                case "4":
+                    featureDetectCycle();
+                    break;
+                case "5":
+                    featureDisconnectedTopics();
+                    break;
+                case "6":
+                    graph.displayGraph();
+                    trie.displayAll();
+                    break;
                 case "7":
                     System.out.println("\nTerima kasih telah menggunakan Library Knowledge Navigator!");
                     running = false;
@@ -66,25 +79,25 @@ public class Main {
     }
 
     // ─────────────────────────────────────────────────────────
-    //  MENU
+    // MENU
     // ─────────────────────────────────────────────────────────
 
     static void printMenu() {
         System.out.println("\n┌──────────────────────────────────────────┐");
         System.out.println("│              MENU UTAMA                  │");
         System.out.println("├──────────────────────────────────────────┤");
-        System.out.println("│  1. Cari topik berdasarkan prefix     │");
-        System.out.println("│  2. Tampilkan prasyarat sebuah topik  │");
-        System.out.println("│  3. Rekomendasikan urutan belajar     │");
-        System.out.println("│  4. Deteksi siklus prasyarat          │");
-        System.out.println("│  5. Tampilkan topik tidak terhubung   │");
-        System.out.println("│  6. Tampilkan semua data              │");
-        System.out.println("│  7. Keluar                            │");
+        System.out.println("│  1. Cari topik berdasarkan prefix        │");
+        System.out.println("│  2. Tampilkan prasyarat sebuah topik     │");
+        System.out.println("│  3. Rekomendasikan urutan belajar        │");
+        System.out.println("│  4. Deteksi siklus prasyarat             │");
+        System.out.println("│  5. Tampilkan topik tidak terhubung      │");
+        System.out.println("│  6. Tampilkan semua data                 │");
+        System.out.println("│  7. Keluar                               │");
         System.out.println("└──────────────────────────────────────────┘");
     }
 
     // ─────────────────────────────────────────────────────────
-    //  FITUR 1: Search by Prefix (Trie)
+    // FITUR 1: Search by Prefix (Trie)
     // ─────────────────────────────────────────────────────────
 
     static void featureSearchByPrefix() {
@@ -116,12 +129,13 @@ public class Main {
                 if (idx >= 0 && idx < results.size()) {
                     dfs.showAllPrerequisites(results.get(idx).getId());
                 }
-            } catch (NumberFormatException ignored) {}
+            } catch (NumberFormatException ignored) {
+            }
         }
     }
 
     // ─────────────────────────────────────────────────────────
-    //  FITUR 2: Show Prerequisites (DFS)
+    // FITUR 2: Show Prerequisites (DFS)
     // ─────────────────────────────────────────────────────────
 
     static void featureShowPrerequisites() {
@@ -150,7 +164,7 @@ public class Main {
     }
 
     // ─────────────────────────────────────────────────────────
-    //  FITUR 3: Learning Order (Topological Sort)
+    // FITUR 3: Learning Order (Topological Sort)
     // ─────────────────────────────────────────────────────────
 
     static void featureLearningOrder() {
@@ -180,7 +194,7 @@ public class Main {
     }
 
     // ─────────────────────────────────────────────────────────
-    //  FITUR 4: Cycle Detection
+    // FITUR 4: Cycle Detection
     // ─────────────────────────────────────────────────────────
 
     static void featureDetectCycle() {
@@ -201,23 +215,23 @@ public class Main {
     static void demoCycleDetection() {
         // Buat graph baru dengan siklus
         TopicGraph cycleGraph = new TopicGraph();
-        Topic tx = new Topic("TX", "Topik X Demo", "Demo", "");
-        Topic ty = new Topic("TY", "Topik Y Demo", "Demo", "");
-        Topic tz = new Topic("TZ", "Topik Z Demo", "Demo", "");
+        Topic tx = new Topic("TX", "Topik X Demo", "Demo", "", 5);
+        Topic ty = new Topic("TY", "Topik Y Demo", "Demo", "", 5);
+        Topic tz = new Topic("TZ", "Topik Z Demo", "Demo", "", 5);
         cycleGraph.addTopic(tx);
         cycleGraph.addTopic(ty);
         cycleGraph.addTopic(tz);
         // Buat siklus: X → Y → Z → X
-        cycleGraph.addPrerequisite("TX", "TY");
-        cycleGraph.addPrerequisite("TY", "TZ");
-        cycleGraph.addPrerequisite("TZ", "TX"); // siklus!
+        cycleGraph.addPrerequisite("Topik X Demo", "Topik Y Demo");
+        cycleGraph.addPrerequisite("Topik Y Demo", "Topik Z Demo");
+        cycleGraph.addPrerequisite("Topik Z Demo", "Topik X Demo"); // siklus!
 
         CycleDetector demoDetector = new CycleDetector(cycleGraph);
         demoDetector.detectCycle();
     }
 
     // ─────────────────────────────────────────────────────────
-    //  FITUR 5: Disconnected Topics
+    // FITUR 5: Disconnected Topics
     // ─────────────────────────────────────────────────────────
 
     static void featureDisconnectedTopics() {
@@ -230,7 +244,7 @@ public class Main {
 
         for (String id : graph.getTopics().keySet()) {
             boolean hasPrereq = !graph.getPrerequisites(id).isEmpty();
-            boolean hasDep    = !graph.getDependents(id).isEmpty();
+            boolean hasDep = !graph.getDependents(id).isEmpty();
 
             if (!hasPrereq && !hasDep) {
                 isolated.add(graph.getTopic(id));
@@ -245,14 +259,17 @@ public class Main {
         if (isolated.isEmpty()) {
             System.out.println("  (tidak ada)");
         } else {
-            for (Topic t : isolated) System.out.println("  - " + t.getTitle());
+            for (Topic t : isolated)
+                System.out.println("  - " + t.getTitle());
         }
 
         System.out.println("\nTopik Dasar (tidak ada prasyarat — titik awal belajar):");
-        for (Topic t : noPrereqs) System.out.println(t.getTitle());
+        for (Topic t : noPrereqs)
+            System.out.println(t.getTitle());
 
         System.out.println("\nTopik Puncak (tidak ada yang bergantung padanya — tujuan akhir):");
-        for (Topic t : noDependents) System.out.println("  🏁 " + t.getTitle());
+        for (Topic t : noDependents)
+            System.out.println("  🏁 " + t.getTitle());
 
         // Cek konektivitas: temukan komponen terhubung
         System.out.println("\nInformasi Graph:");
@@ -261,8 +278,8 @@ public class Main {
     }
 
     // ─────────────────────────────────────────────────────────
-    //  DATASET
-    //  Minimal 25 node, 40 edge sesuai spesifikasi
+    // DATASET
+    // Minimal 25 node, 40 edge sesuai spesifikasi
     // ─────────────────────────────────────────────────────────
 
     static void loadDataset() {
@@ -270,31 +287,31 @@ public class Main {
 
         // ── NODE (25 topik pemrograman) ──────────────────────
         Topic[] topics = {
-            new Topic("T01", "Pengantar Pemrograman",          "Dasar",         "Konsep dasar pemrograman"),
-            new Topic("T02", "Variabel dan Tipe Data",          "Dasar",         "Int, float, string, boolean"),
-            new Topic("T03", "Operator dan Ekspresi",           "Dasar",         "Aritmatika, logika, relasional"),
-            new Topic("T04", "Struktur Kontrol",                "Dasar",         "If-else, switch"),
-            new Topic("T05", "Perulangan (Loop)",               "Dasar",         "For, while, do-while"),
-            new Topic("T06", "Array dan String",                "Menengah",      "Array 1D, 2D, manipulasi string"),
-            new Topic("T07", "Fungsi dan Prosedur",             "Menengah",      "Deklarasi, parameter, return value"),
-            new Topic("T08", "Rekursi",                         "Menengah",      "Base case, recursive case"),
-            new Topic("T09", "Pointer dan Memori",              "Menengah",      "Pointer, heap, stack"),
-            new Topic("T10", "OOP - Dasar",                     "Menengah",      "Class, object, method"),
-            new Topic("T11", "OOP - Inheritance",               "Menengah",      "Extends, super, override"),
-            new Topic("T12", "OOP - Polymorphism",              "Lanjut",        "Overloading, overriding, abstract"),
-            new Topic("T13", "OOP - Interface & Abstract",      "Lanjut",        "Interface, abstract class"),
-            new Topic("T14", "Algoritma Sorting",               "Menengah",      "Bubble, selection, insertion, merge"),
-            new Topic("T15", "Algoritma Searching",             "Menengah",      "Linear search, binary search"),
-            new Topic("T16", "Kompleksitas Algoritma",          "Lanjut",        "Big O notation, analisis"),
-            new Topic("T17", "Struktur Data - Stack & Queue",   "Menengah",      "LIFO, FIFO, implementasi"),
-            new Topic("T18", "Struktur Data - Linked List",     "Menengah",      "Single, double, circular"),
-            new Topic("T19", "Struktur Data - Tree",            "Lanjut",        "BST, AVL, traversal"),
-            new Topic("T20", "Struktur Data - Graph",           "Lanjut",        "Adjacency list/matrix, DFS, BFS"),
-            new Topic("T21", "Dynamic Programming",             "Lanjut",        "Memoization, tabulation"),
-            new Topic("T22", "Greedy Algorithm",                "Lanjut",        "Greedy choice, optimal substructure"),
-            new Topic("T23", "Divide and Conquer",              "Lanjut",        "Merge sort, quick sort, binary search"),
-            new Topic("T24", "Pemrograman Fungsional",          "Lanjut",        "Lambda, higher-order function"),
-            new Topic("T25", "Design Patterns",                 "Lanjut",        "Singleton, Factory, Observer, MVC"),
+                new Topic("T01", "Pengantar Pemrograman", "Dasar", "Konsep dasar pemrograman", 4),
+                new Topic("T02", "Variabel dan Tipe Data", "Dasar", "Int, float, string, boolean", 6),
+                new Topic("T03", "Operator dan Ekspresi", "Dasar", "Aritmatika, logika, relasional", 6),
+                new Topic("T04", "Struktur Kontrol", "Dasar", "If-else, switch", 8),
+                new Topic("T05", "Perulangan (Loop)", "Dasar", "For, while, do-while", 8),
+                new Topic("T06", "Array dan String", "Menengah", "Array 1D, 2D, manipulasi string", 12),
+                new Topic("T07", "Fungsi dan Prosedur", "Menengah", "Deklarasi, parameter, return value", 10),
+                new Topic("T08", "Rekursi", "Menengah", "Base case, recursive case", 12),
+                new Topic("T09", "Pointer dan Memori", "Menengah", "Pointer, heap, stack", 14),
+                new Topic("T10", "OOP - Dasar", "Menengah", "Class, object, method", 16),
+                new Topic("T11", "OOP - Inheritance", "Menengah", "Extends, super, override", 14),
+                new Topic("T12", "OOP - Polymorphism", "Lanjut", "Overloading, overriding, abstract", 20),
+                new Topic("T13", "OOP - Interface & Abstract", "Lanjut", "Interface, abstract class", 18),
+                new Topic("T14", "Algoritma Sorting", "Menengah", "Bubble, selection, insertion, merge", 16),
+                new Topic("T15", "Algoritma Searching", "Menengah", "Linear search, binary search", 12),
+                new Topic("T16", "Kompleksitas Algoritma", "Lanjut", "Big O notation, analisis", 24),
+                new Topic("T17", "Struktur Data - Stack & Queue", "Menengah", "LIFO, FIFO, implementasi", 15),
+                new Topic("T18", "Struktur Data - Linked List", "Menengah", "Single, double, circular", 18),
+                new Topic("T19", "Struktur Data - Tree", "Lanjut", "BST, AVL, traversal", 25),
+                new Topic("T20", "Struktur Data - Graph", "Lanjut", "Adjacency list/matrix, DFS, BFS", 30),
+                new Topic("T21", "Dynamic Programming", "Lanjut", "Memoization, tabulation", 28),
+                new Topic("T22", "Greedy Algorithm", "Lanjut", "Greedy choice, optimal substructure", 22),
+                new Topic("T23", "Divide and Conquer", "Lanjut", "Merge sort, quick sort, binary search", 20),
+                new Topic("T24", "Pemrograman Fungsional", "Lanjut", "Lambda, higher-order function", 20),
+                new Topic("T25", "Design Patterns", "Lanjut", "Singleton, Factory, Observer, MVC", 24),
         };
 
         for (Topic t : topics) {
@@ -305,58 +322,58 @@ public class Main {
         // ── EDGE (prasyarat → dependen) ──────────────────────
         // Format: addPrerequisite("PRASYARAT", "YANG_BUTUH_PRASYARAT")
         String[][] edges = {
-            // Dasar
-            {"T01", "T02"}, // Pengantar → Variabel
-            {"T01", "T03"}, // Pengantar → Operator
-            {"T02", "T03"}, // Variabel  → Operator
-            {"T02", "T04"}, // Variabel  → Struktur Kontrol
-            {"T03", "T04"}, // Operator  → Struktur Kontrol
-            {"T04", "T05"}, // Kontrol   → Loop
+                // Dasar
+                { "Pengantar Pemrograman", "Variabel dan Tipe Data" }, // T01 -> T02
+                { "Pengantar Pemrograman", "Operator dan Ekspresi" }, // T01 -> T03
+                { "Variabel dan Tipe Data", "Operator dan Ekspresi" }, // T02 -> T03
+                { "Variabel dan Tipe Data", "Struktur Kontrol" }, // T02 -> T04
+                { "Operator dan Ekspresi", "Struktur Kontrol" }, // T03 -> T04
+                { "Struktur Kontrol", "Perulangan (Loop)" }, // T04 -> T05
 
-            // Array, Fungsi, Rekursi
-            {"T02", "T06"}, // Variabel  → Array
-            {"T05", "T06"}, // Loop      → Array
-            {"T04", "T07"}, // Kontrol   → Fungsi
-            {"T07", "T08"}, // Fungsi    → Rekursi
-            {"T06", "T08"}, // Array     → Rekursi
-            {"T02", "T09"}, // Variabel  → Pointer
-            {"T07", "T09"}, // Fungsi    → Pointer
+                // Array, Fungsi, Rekursi
+                { "Variabel dan Tipe Data", "Array dan String" }, // T02 -> T06
+                { "Perulangan (Loop)", "Array dan String" }, // T05 -> T06
+                { "Struktur Kontrol", "Fungsi dan Prosedur" }, // T04 -> T07
+                { "Fungsi dan Prosedur", "Rekursi" }, // T07 -> T08
+                { "Array dan String", "Rekursi" }, // T06 -> T08
+                { "Variabel dan Tipe Data", "Pointer dan Memori" }, // T02 -> T09
+                { "Fungsi dan Prosedur", "Pointer dan Memori" }, // T07 -> T09
 
-            // OOP
-            {"T07", "T10"}, // Fungsi    → OOP Dasar
-            {"T10", "T11"}, // OOP Dasar → Inheritance
-            {"T11", "T12"}, // Inherit   → Polymorphism
-            {"T11", "T13"}, // Inherit   → Interface
-            {"T12", "T13"}, // Poly      → Interface
+                // OOP
+                { "Fungsi dan Prosedur", "OOP - Dasar" }, // T07 -> T10
+                { "OOP - Dasar", "OOP - Inheritance" }, // T10 -> T11
+                { "OOP - Inheritance", "OOP - Polymorphism" }, // T11 -> T12
+                { "OOP - Inheritance", "OOP - Interface & Abstract" }, // T11 -> T13
+                { "OOP - Polymorphism", "OOP - Interface & Abstract" }, // T12 -> T13
 
-            // Algoritma
-            {"T06", "T14"}, // Array     → Sorting
-            {"T07", "T14"}, // Fungsi    → Sorting
-            {"T06", "T15"}, // Array     → Searching
-            {"T14", "T16"}, // Sorting   → Kompleksitas
-            {"T15", "T16"}, // Searching → Kompleksitas
-            {"T08", "T23"}, // Rekursi   → Divide & Conquer
-            {"T14", "T23"}, // Sorting   → Divide & Conquer
+                // Algoritma
+                { "Array dan String", "Algoritma Sorting" }, // T06 -> T14
+                { "Fungsi dan Prosedur", "Algoritma Sorting" }, // T07 -> T14
+                { "Array dan String", "Algoritma Searching" }, // T06 -> T15
+                { "Algoritma Sorting", "Kompleksitas Algoritma" }, // T14 -> T16
+                { "Algoritma Searching", "Kompleksitas Algoritma" }, // T15 -> T16
+                { "Rekursi", "Divide and Conquer" }, // T08 -> T23
+                { "Algoritma Sorting", "Divide and Conquer" }, // T14 -> T23
 
-            // Struktur Data
-            {"T09", "T17"}, // Pointer   → Stack & Queue
-            {"T07", "T17"}, // Fungsi    → Stack & Queue
-            {"T09", "T18"}, // Pointer   → Linked List
-            {"T17", "T18"}, // Stack     → Linked List
-            {"T18", "T19"}, // LL        → Tree
-            {"T08", "T19"}, // Rekursi   → Tree
-            {"T19", "T20"}, // Tree      → Graph
-            {"T17", "T20"}, // Stack     → Graph (DFS pakai stack)
+                // Struktur Data
+                { "Pointer dan Memori", "Struktur Data - Stack & Queue" }, // T09 -> T17
+                { "Fungsi dan Prosedur", "Struktur Data - Stack & Queue" }, // T07 -> T17
+                { "Pointer dan Memori", "Struktur Data - Linked List" }, // T09 -> T18
+                { "Struktur Data - Stack & Queue", "Struktur Data - Linked List" }, // T17 -> T18
+                { "Struktur Data - Linked List", "Struktur Data - Tree" }, // T18 -> T19
+                { "Rekursi", "Struktur Data - Tree" }, // T08 -> T19
+                { "Struktur Data - Tree", "Struktur Data - Graph" }, // T19 -> T20
+                { "Struktur Data - Stack & Queue", "Struktur Data - Graph" }, // T17 -> T20
 
-            // Advanced
-            {"T08", "T21"}, // Rekursi   → DP
-            {"T16", "T21"}, // Kompleks  → DP
-            {"T16", "T22"}, // Kompleks  → Greedy
-            {"T14", "T22"}, // Sorting   → Greedy
-            {"T10", "T24"}, // OOP       → Pemrog Fungsional
-            {"T07", "T24"}, // Fungsi    → Pemrog Fungsional
-            {"T13", "T25"}, // Interface → Design Patterns
-            {"T10", "T25"}, // OOP Dasar → Design Patterns
+                // Advanced
+                { "Rekursi", "Dynamic Programming" }, // T08 -> T21
+                { "Kompleksitas Algoritma", "Dynamic Programming" }, // T16 -> T21
+                { "Kompleksitas Algoritma", "Greedy Algorithm" }, // T16 -> T22
+                { "Algoritma Sorting", "Greedy Algorithm" }, // T14 -> T22
+                { "OOP - Dasar", "Pemrograman Fungsional" }, // T10 -> T24
+                { "Fungsi dan Prosedur", "Pemrograman Fungsional" }, // T07 -> T24
+                { "OOP - Interface & Abstract", "Design Patterns" }, // T13 -> T25
+                { "OOP - Dasar", "Design Patterns" }, // T10 -> T25
         };
 
         for (String[] edge : edges) {

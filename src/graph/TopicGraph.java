@@ -53,23 +53,38 @@ public class TopicGraph {
     }
 
     /**
-     * Menambahkan edge prasyarat: prerequisiteId → dependentId
-     * Artinya: prerequisiteId harus dipelajari SEBELUM dependentId
+     * Menambahkan edge prasyarat: prerequisite → dependent
+     * Menerima Judul Topik atau ID Topik sebagai parameter.
      *
-     * @param prerequisiteId ID topik prasyarat
-     * @param dependentId    ID topik yang membutuhkan prasyarat
+     * @param prerequisiteTitleOrId Judul atau ID topik prasyarat
+     * @param dependentTitleOrId    Judul atau ID topik dependen
      */
-    public void addPrerequisite(String prerequisiteId, String dependentId) {
-        if (!topics.containsKey(prerequisiteId)) {
-            throw new IllegalArgumentException("Topik prasyarat tidak ditemukan: " + prerequisiteId);
+    public void addPrerequisite(String prerequisiteTitleOrId, String dependentTitleOrId) {
+        String prereqId = findIdByTitleOrId(prerequisiteTitleOrId);
+        String depId = findIdByTitleOrId(dependentTitleOrId);
+
+        if (prereqId == null) {
+            throw new IllegalArgumentException("Topik prasyarat tidak ditemukan: " + prerequisiteTitleOrId);
         }
-        if (!topics.containsKey(dependentId)) {
-            throw new IllegalArgumentException("Topik dependen tidak ditemukan: " + dependentId);
+        if (depId == null) {
+            throw new IllegalArgumentException("Topik dependen tidak ditemukan: " + dependentTitleOrId);
         }
         // prerequisiteId → dependentId
-        adjacencyList.get(prerequisiteId).add(dependentId);
+        adjacencyList.get(prereqId).add(depId);
         // reversenya: dependentId membutuhkan prerequisiteId
-        reverseList.get(dependentId).add(prerequisiteId);
+        reverseList.get(depId).add(prereqId);
+    }
+
+    private String findIdByTitleOrId(String identifier) {
+        if (topics.containsKey(identifier)) {
+            return identifier;
+        }
+        for (Topic t : topics.values()) {
+            if (t.getTitle().equalsIgnoreCase(identifier)) {
+                return t.getId();
+            }
+        }
+        return null;
     }
 
     /**
