@@ -153,4 +153,68 @@ public class TopicGraph {
         for (List<String> edges : adjacencyList.values()) count += edges.size();
         return count;
     }
+
+    /**
+     * Menghapus topik dari graph beserta seluruh relasi prasyaratnya.
+     *
+     * @param id ID topik yang akan dihapus
+     * @return true jika berhasil dihapus
+     */
+    public boolean removeTopic(String id) {
+        if (!topics.containsKey(id)) {
+            return false;
+        }
+
+        // Hapus topik dari map utama
+        topics.remove(id);
+
+        // Hapus dari adjacencyList (semua edge keluar dari id)
+        adjacencyList.remove(id);
+
+        // Hapus id dari adjacencyList milik node lain (semua edge masuk ke id)
+        for (List<String> dependents : adjacencyList.values()) {
+            dependents.remove(id);
+        }
+
+        // Hapus dari reverseList (semua edge masuk ke id)
+        reverseList.remove(id);
+
+        // Hapus id dari reverseList milik node lain (semua edge keluar dari id)
+        for (List<String> prereqs : reverseList.values()) {
+            prereqs.remove(id);
+        }
+
+        return true;
+    }
+
+    /**
+     * Menghapus hubungan prasyarat: prerequisiteId -> dependentId
+     *
+     * @param prereqId ID topik prasyarat
+     * @param depId    ID topik dependen
+     * @return true jika berhasil dihapus
+     */
+    public boolean removePrerequisite(String prereqId, String depId) {
+        if (!topics.containsKey(prereqId) || !topics.containsKey(depId)) {
+            return false;
+        }
+
+        List<String> deps = adjacencyList.get(prereqId);
+        List<String> prereqs = reverseList.get(depId);
+
+        boolean removedFromDeps = (deps != null) && deps.remove(depId);
+        boolean removedFromPrereqs = (prereqs != null) && prereqs.remove(prereqId);
+
+        return removedFromDeps || removedFromPrereqs;
+    }
+
+    /**
+     * Memperbarui informasi topik yang sudah ada.
+     *
+     * @param id          ID topik yang akan diperbarui
+     * @param newTopic    Objek Topic baru dengan informasi yang diperbarui
+     */
+    public void updateTopic(String id, Topic newTopic) {
+        topics.put(id, newTopic);
+    }
 }

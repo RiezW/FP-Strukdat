@@ -44,7 +44,7 @@ public class Main {
         boolean running = true;
         while (running) {
             printMenu();
-            System.out.print("Pilih menu [1-8]: ");
+            System.out.print("Pilih menu [1-9]: ");
             String input = scanner.nextLine().trim();
 
             switch (input) {
@@ -67,15 +67,18 @@ public class Main {
                     featureInsertData();
                     break;
                 case "7":
+                    featureUpdateOrDelete();
+                    break;
+                case "8":
                     graph.displayGraph();
                     trie.displayAll();
                     break;
-                case "8":
+                case "9":
                     System.out.println("\nTerima kasih telah menggunakan Library Knowledge Navigator!");
                     running = false;
                     break;
                 default:
-                    System.out.println("\n Pilihan tidak valid. Silakan pilih 1-8.");
+                    System.out.println("\n Pilihan tidak valid. Silakan pilih 1-9.");
             }
         }
         scanner.close();
@@ -95,8 +98,9 @@ public class Main {
         System.out.println("│  4. Deteksi siklus prasyarat             │");
         System.out.println("│  5. Tampilkan topik tidak terhubung      │");
         System.out.println("│  6. Insert data topik baru               │");
-        System.out.println("│  7. Tampilkan semua data                 │");
-        System.out.println("│  8. Keluar                               │");
+        System.out.println("│  7. Update atau delete data              │");
+        System.out.println("│  8. Tampilkan semua data                 │");
+        System.out.println("│  9. Keluar                               │");
         System.out.println("└──────────────────────────────────────────┘");
     }
 
@@ -434,6 +438,187 @@ public class Main {
             }
         }
         return String.format("T%02d", max + 1);
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // FITUR 7: Update dan Delete Data
+    // ─────────────────────────────────────────────────────────
+
+    static void featureUpdateOrDelete() {
+        boolean inSubMenu = true;
+        while (inSubMenu) {
+            System.out.println("\n┌──────────────────────────────────────────┐");
+            System.out.println("│          SUB-MENU UPDATE & DELETE        │");
+            System.out.println("├──────────────────────────────────────────┤");
+            System.out.println("│  1. Update data topik                    │");
+            System.out.println("│  2. Hapus topik secara permanen          │");
+            System.out.println("│  3. Hapus relasi prasyarat               │");
+            System.out.println("│  4. Kembali ke menu utama                │");
+            System.out.println("└──────────────────────────────────────────┘");
+            System.out.print("Pilih submenu [1-4]: ");
+            String subChoice = scanner.nextLine().trim();
+
+            switch (subChoice) {
+                case "1":
+                    subFeatureUpdateTopic();
+                    break;
+                case "2":
+                    subFeatureDeleteTopic();
+                    break;
+                case "3":
+                    subFeatureDeletePrerequisite();
+                    break;
+                case "4":
+                    inSubMenu = false;
+                    break;
+                default:
+                    System.out.println("\n Pilihan tidak valid. Silakan pilih 1-4.");
+            }
+        }
+    }
+
+    static void subFeatureUpdateTopic() {
+        System.out.println("\n--- UPDATE DATA TOPIK ---");
+        System.out.print("Masukkan ID atau Judul topik yang akan diupdate: ");
+        String search = scanner.nextLine().trim();
+        String id = findTopicIdByTitleOrId(search);
+
+        if (id == null) {
+            System.out.println("Topik tidak ditemukan.");
+            return;
+        }
+
+        Topic current = graph.getTopic(id);
+        System.out.println("\nData saat ini:");
+        System.out.printf("  ID          : %s%n", current.getId());
+        System.out.printf("  Judul       : %s%n", current.getTitle());
+        System.out.printf("  Kategori    : %s%n", current.getCategory());
+        System.out.printf("  Deskripsi   : %s%n", current.getDescription());
+        System.out.printf("  Durasi      : %d Jam%n", current.getDuration());
+        System.out.printf("  Tahun Terbit: %d%n", current.getPublishYear());
+
+        System.out.println("\nMasukkan data baru (kosongkan / tekan Enter jika tidak ingin diubah):");
+
+        System.out.print("Masukkan judul baru: ");
+        String newTitle = scanner.nextLine().trim();
+        if (newTitle.isEmpty()) {
+            newTitle = current.getTitle();
+        } else if (!newTitle.equalsIgnoreCase(current.getTitle()) && isTitleExists(newTitle)) {
+            System.out.println("Judul topik sudah ada. Update dibatalkan.");
+            return;
+        }
+
+        System.out.print("Masukkan kategori baru: ");
+        String newCategory = scanner.nextLine().trim();
+        if (newCategory.isEmpty()) {
+            newCategory = current.getCategory();
+        }
+
+        System.out.print("Masukkan deskripsi baru: ");
+        String newDescription = scanner.nextLine().trim();
+        if (newDescription.isEmpty()) {
+            newDescription = current.getDescription();
+        }
+
+        System.out.print("Masukkan durasi belajar baru (jam): ");
+        String durationInput = scanner.nextLine().trim();
+        int newDuration = current.getDuration();
+        if (!durationInput.isEmpty()) {
+            try {
+                newDuration = Integer.parseInt(durationInput);
+                if (newDuration < 0) {
+                    System.out.println("Durasi tidak boleh negatif. Update dibatalkan.");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Input tidak valid. Update dibatalkan.");
+                return;
+            }
+        }
+
+        System.out.print("Masukkan tahun terbit baru: ");
+        String yearInput = scanner.nextLine().trim();
+        int newYear = current.getPublishYear();
+        if (!yearInput.isEmpty()) {
+            try {
+                newYear = Integer.parseInt(yearInput);
+                if (newYear < 0) {
+                    System.out.println("Tahun tidak boleh negatif. Update dibatalkan.");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Input tidak valid. Update dibatalkan.");
+                return;
+            }
+        }
+
+        // Jika judul berubah, kita harus hapus judul lama dari Trie dan insert ulang
+        if (!newTitle.equalsIgnoreCase(current.getTitle())) {
+            trie.delete(current.getTitle());
+        }
+
+        Topic updatedTopic = new Topic(id, newTitle, newCategory, newDescription, newDuration, newYear);
+        graph.updateTopic(id, updatedTopic);
+        trie.insert(updatedTopic);
+
+        System.out.println("\nTopik berhasil diperbarui.");
+    }
+
+    static void subFeatureDeleteTopic() {
+        System.out.println("\n--- HAPUS TOPIK SECARA PERMANEN ---");
+        System.out.print("Masukkan ID atau Judul topik yang akan dihapus: ");
+        String search = scanner.nextLine().trim();
+        String id = findTopicIdByTitleOrId(search);
+
+        if (id == null) {
+            System.out.println("Topik tidak ditemukan.");
+            return;
+        }
+
+        Topic topic = graph.getTopic(id);
+        System.out.printf("Apakah Anda yakin ingin menghapus topik \"%s\" (%s)? (y/n): ", topic.getTitle(), id);
+        String confirm = scanner.nextLine().trim();
+        if (!confirm.equalsIgnoreCase("y")) {
+            System.out.println("Penghapusan dibatalkan.");
+            return;
+        }
+
+        // Hapus dari Trie
+        trie.delete(topic.getTitle());
+
+        // Hapus dari Graph (sekaligus membersihkan edge terkait)
+        graph.removeTopic(id);
+
+        System.out.printf("Topik \"%s\" berhasil dihapus.%n", topic.getTitle());
+    }
+
+    static void subFeatureDeletePrerequisite() {
+        System.out.println("\n--- HAPUS RELASI PRASYARAT ---");
+        System.out.print("Masukkan ID/Judul topik prasyarat (Prerequisite): ");
+        String prereqSearch = scanner.nextLine().trim();
+        String prereqId = findTopicIdByTitleOrId(prereqSearch);
+
+        if (prereqId == null) {
+            System.out.println("Topik prasyarat tidak ditemukan.");
+            return;
+        }
+
+        System.out.print("Masukkan ID/Judul topik dependen (Dependent): ");
+        String depSearch = scanner.nextLine().trim();
+        String depId = findTopicIdByTitleOrId(depSearch);
+
+        if (depId == null) {
+            System.out.println("Topik dependen tidak ditemukan.");
+            return;
+        }
+
+        boolean success = graph.removePrerequisite(prereqId, depId);
+        if (success) {
+            System.out.printf("Relasi prasyarat \"%s\" -> \"%s\" berhasil dihapus.%n",
+                    graph.getTopic(prereqId).getTitle(), graph.getTopic(depId).getTitle());
+        } else {
+            System.out.println("Relasi prasyarat tersebut tidak ditemukan.");
+        }
     }
 
     // ─────────────────────────────────────────────────────────
