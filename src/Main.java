@@ -199,7 +199,7 @@ public class Main {
 
     static void featureDetectCycle() {
         System.out.println("\n=== DETEKSI SIKLUS PRASYARAT ===");
-        System.out.println("Menjalankan DFS 3-Warna (WHITE → GRAY → BLACK)...\n");
+        System.out.println("Menjalankan DFS 3-Warna (WHITE > GRAY > BLACK)...\n");
         cycleDetector.detectCycle();
 
         // Demo siklus buatan
@@ -263,13 +263,13 @@ public class Main {
                 System.out.println("  - " + t.getTitle());
         }
 
-        System.out.println("\nTopik Dasar (tidak ada prasyarat — titik awal belajar):");
+        System.out.println("\nTopik Dasar (tidak ada prasyarat - titik awal belajar):");
         for (Topic t : noPrereqs)
             System.out.println(t.getTitle());
 
-        System.out.println("\nTopik Puncak (tidak ada yang bergantung padanya — tujuan akhir):");
+        System.out.println("\nTopik Puncak (tidak ada yang bergantung padanya - tujuan akhir):");
         for (Topic t : noDependents)
-            System.out.println("  🏁 " + t.getTitle());
+            System.out.println(t.getTitle());
 
         // Cek konektivitas: temukan komponen terhubung
         System.out.println("\nInformasi Graph:");
