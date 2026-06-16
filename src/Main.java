@@ -44,7 +44,7 @@ public class Main {
         boolean running = true;
         while (running) {
             printMenu();
-            System.out.print("Pilih menu [1-7]: ");
+            System.out.print("Pilih menu [1-8]: ");
             String input = scanner.nextLine().trim();
 
             switch (input) {
@@ -64,15 +64,18 @@ public class Main {
                     featureDisconnectedTopics();
                     break;
                 case "6":
+                    featureInsertData();
+                    break;
+                case "7":
                     graph.displayGraph();
                     trie.displayAll();
                     break;
-                case "7":
+                case "8":
                     System.out.println("\nTerima kasih telah menggunakan Library Knowledge Navigator!");
                     running = false;
                     break;
                 default:
-                    System.out.println("\n Pilihan tidak valid. Silakan pilih 1-7.");
+                    System.out.println("\n Pilihan tidak valid. Silakan pilih 1-8.");
             }
         }
         scanner.close();
@@ -91,8 +94,9 @@ public class Main {
         System.out.println("│  3. Rekomendasikan urutan belajar        │");
         System.out.println("│  4. Deteksi siklus prasyarat             │");
         System.out.println("│  5. Tampilkan topik tidak terhubung      │");
-        System.out.println("│  6. Tampilkan semua data                 │");
-        System.out.println("│  7. Keluar                               │");
+        System.out.println("│  6. Insert data topik baru               │");
+        System.out.println("│  7. Tampilkan semua data                 │");
+        System.out.println("│  8. Keluar                               │");
         System.out.println("└──────────────────────────────────────────┘");
     }
 
@@ -275,6 +279,161 @@ public class Main {
         System.out.println("\nInformasi Graph:");
         System.out.printf("  Total topik (node)  : %d%n", graph.getTopicCount());
         System.out.printf("  Total relasi (edge) : %d%n", graph.getEdgeCount());
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // FITUR 6: Insert Data
+    // ─────────────────────────────────────────────────────────
+
+    static void featureInsertData() {
+        System.out.println("\n=== INSERT DATA TOPIK BARU ===");
+
+        String generatedId = generateNextTopicId();
+        System.out.printf("ID otomatis berikutnya: %s%n", generatedId);
+        System.out.print("Masukkan ID topik (Enter untuk pakai ID otomatis): ");
+        String id = scanner.nextLine().trim().toUpperCase();
+        if (id.isEmpty()) {
+            id = generatedId;
+        }
+
+        if (graph.containsTopic(id)) {
+            System.out.println("ID sudah digunakan. Insert dibatalkan.");
+            return;
+        }
+
+        System.out.print("Masukkan judul topik: ");
+        String title = scanner.nextLine().trim();
+        if (title.isEmpty()) {
+            System.out.println("Judul tidak boleh kosong. Insert dibatalkan.");
+            return;
+        }
+        if (isTitleExists(title)) {
+            System.out.println("Judul topik sudah ada. Insert dibatalkan.");
+            return;
+        }
+
+        System.out.print("Masukkan kategori: ");
+        String category = scanner.nextLine().trim();
+        if (category.isEmpty()) {
+            category = "General";
+        }
+
+        System.out.print("Masukkan deskripsi: ");
+        String description = scanner.nextLine().trim();
+
+        int duration = readInteger("Masukkan durasi belajar (jam): ");
+        if (duration < 0) {
+            System.out.println("Durasi tidak boleh negatif. Insert dibatalkan.");
+            return;
+        }
+
+        int year = readInteger("Masukkan tahun materi: ");
+        if (year < 0) {
+            System.out.println("Tahun tidak boleh negatif. Insert dibatalkan.");
+            return;
+        }
+
+        List<String> prerequisiteIds = readPrerequisiteIds(id, title);
+        if (prerequisiteIds == null) {
+            System.out.println("Insert dibatalkan karena prasyarat tidak valid.");
+            return;
+        }
+
+        Topic newTopic = new Topic(id, title, category, description, duration, year);
+        graph.addTopic(newTopic);
+        trie.insert(newTopic);
+
+        for (String prereqId : prerequisiteIds) {
+            graph.addPrerequisite(prereqId, id);
+        }
+
+        System.out.printf("%nTopik \"%s\" berhasil ditambahkan.%n", title);
+        System.out.printf("Total sekarang: %d topik, %d relasi prasyarat.%n",
+                graph.getTopicCount(), graph.getEdgeCount());
+    }
+
+    static int readInteger(String prompt) {
+        System.out.print(prompt);
+        String input = scanner.nextLine().trim();
+        try {
+            return Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    static List<String> readPrerequisiteIds(String newId, String newTitle) {
+        System.out.println("\nDaftar Topik yang Bisa Dijadikan Prasyarat:");
+        for (Topic t : graph.getTopics().values()) {
+            System.out.printf("  %s - %s%n", t.getId(), t.getTitle());
+        }
+
+        System.out.println("\nMasukkan prasyarat dipisah koma.");
+        System.out.print("Bisa memakai ID atau judul topik (kosongkan jika tidak ada): ");
+        String input = scanner.nextLine().trim();
+        List<String> prerequisiteIds = new ArrayList<>();
+
+        if (input.isEmpty()) {
+            return prerequisiteIds;
+        }
+
+        Set<String> uniqueIds = new LinkedHashSet<>();
+        for (String rawPrereq : input.split(",")) {
+            String prereq = rawPrereq.trim();
+            if (prereq.isEmpty()) {
+                continue;
+            }
+
+            String prereqId = findTopicIdByTitleOrId(prereq);
+            if (prereqId == null) {
+                System.out.println("Prasyarat tidak ditemukan: " + prereq);
+                return null;
+            }
+            if (prereqId.equalsIgnoreCase(newId) || prereq.equalsIgnoreCase(newTitle)) {
+                System.out.println("Topik baru tidak boleh menjadi prasyarat untuk dirinya sendiri.");
+                return null;
+            }
+            uniqueIds.add(prereqId);
+        }
+
+        prerequisiteIds.addAll(uniqueIds);
+        return prerequisiteIds;
+    }
+
+    static String findTopicIdByTitleOrId(String identifier) {
+        String normalizedId = identifier.toUpperCase();
+        if (graph.containsTopic(normalizedId)) {
+            return normalizedId;
+        }
+
+        for (Topic t : graph.getTopics().values()) {
+            if (t.getTitle().equalsIgnoreCase(identifier)) {
+                return t.getId();
+            }
+        }
+        return null;
+    }
+
+    static boolean isTitleExists(String title) {
+        for (Topic t : graph.getTopics().values()) {
+            if (t.getTitle().equalsIgnoreCase(title)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static String generateNextTopicId() {
+        int max = 0;
+        for (String id : graph.getTopics().keySet()) {
+            if (id.matches("T\\d+")) {
+                try {
+                    max = Math.max(max, Integer.parseInt(id.substring(1)));
+                } catch (NumberFormatException ignored) {
+                }
+            }
+        }
+        return String.format("T%02d", max + 1);
     }
 
     // ─────────────────────────────────────────────────────────
