@@ -125,7 +125,7 @@ public class TopicGraph {
      */
     public void displayGraph() {
         System.out.println("\n=== GRAPH PRASYARAT (Adjacency List) ===");
-        System.out.println("Format: Topik → [Topik yang membutuhkan ini]\n");
+        System.out.println("Format: Topik > [Topik yang membutuhkan ini]\n");
         for (String id : adjacencyList.keySet()) {
             Topic t = topics.get(id);
             List<String> deps = adjacencyList.get(id);
