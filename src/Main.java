@@ -34,8 +34,8 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("╔══════════════════════════════════════════════════════════╗");
-        System.out.println("║          LIBRARY KNOWLEDGE NAVIGATOR              ║");
-        System.out.println("║     Sistem Pencarian & Rekomendasi Urutan Belajar       ║");
+        System.out.println("║          LIBRARY KNOWLEDGE NAVIGATOR                     ║");
+        System.out.println("║     Sistem Pencarian & Rekomendasi Urutan Belajar        ║");
         System.out.println("╚══════════════════════════════════════════════════════════╝");
 
         // Load dataset
