@@ -1,26 +1,26 @@
-id,title,category,description,duration,prerequisites
-T01,Pengantar Pemrograman,Dasar,Konsep dasar pemrograman,4,
-T02,Variabel dan Tipe Data,Dasar,"Int, float, string, boolean",6,Pengantar Pemrograman
-T03,Operator dan Ekspresi,Dasar,"Aritmatika, logika, relasional",6,"Pengantar Pemrograman,Variabel dan Tipe Data"
-T04,Struktur Kontrol,Dasar,"If-else, switch",8,"Variabel dan Tipe Data,Operator dan Ekspresi"
-T05,Perulangan (Loop),Dasar,"For, while, do-while",8,Struktur Kontrol
-T06,Array dan String,Menengah,"Array 1D, 2D, manipulasi string",12,"Variabel dan Tipe Data,Perulangan (Loop)"
-T07,Fungsi dan Prosedur,Menengah,"Deklarasi, parameter, return value",10,Struktur Kontrol
-T08,Rekursi,Menengah,"Base case, recursive case",12,"Fungsi dan Prosedur,Array dan String"
-T09,Pointer dan Memori,Menengah,"Pointer, heap, stack",14,"Variabel dan Tipe Data,Fungsi dan Prosedur"
-T10,OOP - Dasar,Menengah,"Class, object, method",16,Fungsi dan Prosedur
-T11,OOP - Inheritance,Menengah,"Extends, super, override",14,OOP - Dasar
-T12,OOP - Polymorphism,Lanjut,"Overloading, overriding, abstract",20,OOP - Inheritance
-T13,OOP - Interface & Abstract,Lanjut,"Interface, abstract class",18,"OOP - Inheritance,OOP - Polymorphism"
-T14,Algoritma Sorting,Menengah,"Bubble, selection, insertion, merge",16,"Array dan String,Fungsi dan Prosedur"
-T15,Algoritma Searching,Menengah,"Linear search, binary search",12,Array dan String
-T16,Kompleksitas Algoritma,Lanjut,Big O notation,24,"Algoritma Sorting,Algoritma Searching"
-T17,Struktur Data - Stack & Queue,Menengah,"LIFO, FIFO",15,"Pointer dan Memori,Fungsi dan Prosedur"
-T18,Struktur Data - Linked List,Menengah,"Single, double, circular",18,"Pointer dan Memori,Struktur Data - Stack & Queue"
-T19,Struktur Data - Tree,Lanjut,"BST, AVL, traversal",25,"Struktur Data - Linked List,Rekursi"
-T20,Struktur Data - Graph,Lanjut,"Adjacency list/matrix, DFS, BFS",30,"Struktur Data - Tree,Struktur Data - Stack & Queue"
-T21,Dynamic Programming,Lanjut,"Memoization, tabulation",28,"Rekursi,Kompleksitas Algoritma"
-T22,Greedy Algorithm,Lanjut,"Greedy choice, optimal substructure",22,"Kompleksitas Algoritma,Algoritma Sorting"
-T23,Divide and Conquer,Lanjut,"Merge sort, quick sort, binary search",20,"Rekursi,Algoritma Sorting"
-T24,Pemrograman Fungsional,Lanjut,"Lambda, higher-order function",20,"OOP - Dasar,Fungsi dan Prosedur"
-T25,Design Patterns,Lanjut,"Singleton, Factory, Observer, MVC",24,"OOP - Interface & Abstract,OOP - Dasar"
+id,title,category,description,duration,publishYear,prerequisites
+T01,Pengantar Pemrograman,Dasar,Konsep dasar pemrograman,4,2008,
+T02,Variabel dan Tipe Data,Dasar,"Int, float, string, boolean",6,2009,Pengantar Pemrograman
+T03,Operator dan Ekspresi,Dasar,"Aritmatika, logika, relasional",6,2009,"Pengantar Pemrograman,Variabel dan Tipe Data"
+T04,Struktur Kontrol,Dasar,"If-else, switch",8,2010,"Variabel dan Tipe Data,Operator dan Ekspresi"
+T05,Perulangan (Loop),Dasar,"For, while, do-while",8,2010,Struktur Kontrol
+T06,Array dan String,Menengah,"Array 1D, 2D, manipulasi string",12,2010,"Variabel dan Tipe Data,Perulangan (Loop)"
+T07,Fungsi dan Prosedur,Menengah,"Deklarasi, parameter, return value",10,2009,Struktur Kontrol
+T08,Rekursi,Menengah,"Base case, recursive case",12,2008,"Fungsi dan Prosedur,Array dan String"
+T09,Pointer dan Memori,Menengah,"Pointer, heap, stack",14,2007,"Variabel dan Tipe Data,Fungsi dan Prosedur"
+T10,OOP - Dasar,Menengah,"Class, object, method",16,2011,Fungsi dan Prosedur
+T11,OOP - Inheritance,Menengah,"Extends, super, override",14,2011,OOP - Dasar
+T12,OOP - Polymorphism,Lanjut,"Overloading, overriding, abstract",20,2012,OOP - Inheritance
+T13,OOP - Interface & Abstract,Lanjut,"Interface, abstract class",18,2012,"OOP - Inheritance,OOP - Polymorphism"
+T14,Algoritma Sorting,Menengah,"Bubble, selection, insertion, merge",16,2008,"Array dan String,Fungsi dan Prosedur"
+T15,Algoritma Searching,Menengah,"Linear search, binary search",12,2009,Array dan String
+T16,Kompleksitas Algoritma,Lanjut,Big O notation,24,2010,"Algoritma Sorting,Algoritma Searching"
+T17,Struktur Data - Stack & Queue,Menengah,"LIFO, FIFO",15,2008,"Pointer dan Memori,Fungsi dan Prosedur"
+T18,Struktur Data - Linked List,Menengah,"Single, double, circular",18,2009,"Pointer dan Memori,Struktur Data - Stack & Queue"
+T19,Struktur Data - Tree,Lanjut,"BST, AVL, traversal",25,2011,"Struktur Data - Linked List,Rekursi"
+T20,Struktur Data - Graph,Lanjut,"Adjacency list/matrix, DFS, BFS",30,2012,"Struktur Data - Tree,Struktur Data - Stack & Queue"
+T21,Dynamic Programming,Lanjut,"Memoization, tabulation",28,2010,"Rekursi,Kompleksitas Algoritma"
+T22,Greedy Algorithm,Lanjut,"Greedy choice, optimal substructure",22,2011,"Kompleksitas Algoritma,Algoritma Sorting"
+T23,Divide and Conquer,Lanjut,"Merge sort, quick sort, binary search",20,2009,"Rekursi,Algoritma Sorting"
+T24,Pemrograman Fungsional,Lanjut,"Lambda, higher-order function",20,2012,"OOP - Dasar,Fungsi dan Prosedur"
+T25,Design Patterns,Lanjut,"Singleton, Factory, Observer, MVC",24,2013,"OOP - Interface & Abstract,OOP - Dasar"
