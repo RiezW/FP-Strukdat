@@ -7,8 +7,8 @@ import java.util.*;
 
 /**
  * ╔══════════════════════════════════════════════════════════╗
- * ║ LIBRARY KNOWLEDGE NAVIGATOR ║
- * ║ Final Project — Struktur Data ║
+ * ║ LIBRARY KNOWLEDGE NAVIGATOR                              ║
+ * ║ Final Project — Struktur Data                            ║
  * ╚══════════════════════════════════════════════════════════╝
  *
  * Sistem pencarian topik dan rekomendasi urutan belajar
