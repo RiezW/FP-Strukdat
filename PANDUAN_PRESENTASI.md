@@ -76,11 +76,11 @@ Struktur data Trie digunakan untuk **pencarian cepat berbasis awalan (prefix/aut
 
 ---
 
-## 🔵 BAGIAN 2: GRAPH REPRESENTATION
-Struktur data Directed Graph menggunakan Adjacency List untuk menyimpan hubungan prasyarat.
+## 🔵 BAGIAN 2: GRAPH REPRESENTATION (ADJACENCY LIST)
+Struktur data Directed Graph menggunakan **Adjacency List** untuk menyimpan hubungan prasyarat.
 
 ### 1. Deklarasi Struktur Adjacency List
-* **File:** [TopicGraph.java](file:///c:/Users/riezc/Documents/Kuliah/Mata%20Kuliah/Struktur%20Data/FP%20STRUKDAT%202/src/graph/TopicGraph.java#L29-L41)
+* **File & Lokasi:** [TopicGraph.java](file:///c:/Users/riezc/Documents/Kuliah/Mata%20Kuliah/Struktur%20Data/FP%20STRUKDAT%202/src/graph/TopicGraph.java#L28-L32) (Deklarasi variabel instansiasi Map)
 * **Potongan Kode:**
 ```java
     // adjacencyList[topicId] = list of topicId yang membutuhkan topik ini sebagai prasyarat
@@ -96,7 +96,7 @@ Struktur data Directed Graph menggunakan Adjacency List untuk menyimpan hubungan
 ---
 
 ### 2. Menghubungkan Dua Topik (Menambah Edge)
-* **File:** [TopicGraph.java](file:///c:/Users/riezc/Documents/Kuliah/Mata%20Kuliah/Struktur%20Data/FP%20STRUKDAT%202/src/graph/TopicGraph.java#L62-L76)
+* **File & Lokasi:** [TopicGraph.java](file:///c:/Users/riezc/Documents/Kuliah/Mata%20Kuliah/Struktur%20Data/FP%20STRUKDAT%202/src/graph/TopicGraph.java#L62-L76) (Dalam method `addPrerequisite`)
 * **Method:** `addPrerequisite(String prerequisiteTitleOrId, String dependentTitleOrId)`
 * **Potongan Kode:**
 ```java
@@ -120,7 +120,7 @@ Struktur data Directed Graph menggunakan Adjacency List untuk menyimpan hubungan
 ---
 
 ### 3. Menghitung In-Degree (Banyaknya Prasyarat Masuk)
-* **File:** [TopicGraph.java](file:///c:/Users/riezc/Documents/Kuliah/Mata%20Kuliah/Struktur%20Data/FP%20STRUKDAT%202/src/graph/TopicGraph.java#L109-L121)
+* **File & Lokasi:** [TopicGraph.java](file:///c:/Users/riezc/Documents/Kuliah/Mata%20Kuliah/Struktur%20Data/FP%20STRUKDAT%202/src/graph/TopicGraph.java#L109-L121) (Dalam method `computeInDegrees`)
 * **Method:** `computeInDegrees()`
 * **Potongan Kode:**
 ```java
@@ -141,7 +141,38 @@ Struktur data Directed Graph menggunakan Adjacency List untuk menyimpan hubungan
 
 ---
 
-## 🟡 BAGIAN 3: ALGORITMA UTAMA (ALGORITHMS)
+## 🟠 BAGIAN 3: PENERAPAN OOP (OBJECT-ORIENTED PROGRAMMING)
+Paradigma OOP diterapkan secara eksplisit pada beberapa kelas berikut:
+
+### 1. Encapsulation (Enkapsulasi)
+* **File & Lokasi:** [Topic.java](file:///c:/Users/riezc/Documents/Kuliah/Mata%20Kuliah/Struktur%20Data/FP%20STRUKDAT%202/src/model/Topic.java#L10-L15) (Deklarasi variabel private) dan getter di baris 38-43.
+* **Penjelasan:** Variabel-variabel instansiasi seperti `id`, `title`, dan `category` dideklarasikan sebagai `private` dan diakses secara publik menggunakan metode *getter* demi keamanan data.
+* **Potongan Kode:**
+```java
+public class Topic {
+    private String id;
+    private String title;
+    private String category;
+    // ... getter untuk mengakses data secara aman ...
+    public String getId() { return id; }
+    public String getTitle() { return title; }
+}
+```
+
+### 2. Polymorphism (Polimorfisme) & Overloading
+* **Constructor Overloading:** Terletak di [Topic.java](file:///c:/Users/riezc/Documents/Kuliah/Mata%20Kuliah/Struktur%20Data/FP%20STRUKDAT%202/src/model/Topic.java#L17-L36). Terdapat 4 konstruktor berbeda untuk instansiasi objek `Topic` secara fleksibel sesuai dengan input yang tersedia.
+* **Method Overriding:** Terletak di [Topic.java](file:///c:/Users/riezc/Documents/Kuliah/Mata%20Kuliah/Struktur%20Data/FP%20STRUKDAT%202/src/model/Topic.java#L45-L48) (Meng-override method `toString()` bawaan Java class `Object`).
+* **Potongan Kode:**
+```java
+    @Override
+    public String toString() {
+        return String.format("[%s] %s (%s) - %d Jam - Terbit: %d", id, title, category, duration, publishYear);
+    }
+```
+
+---
+
+## 🟡 BAGIAN 4: ALGORITMA UTAMA (ALGORITHMS)
 
 ### 1. Deteksi Siklus (3-Warna DFS)
 * **File:** [CycleDetector.java](file:///c:/Users/riezc/Documents/Kuliah/Mata%20Kuliah/Struktur%20Data/FP%20STRUKDAT%202/src/graph/CycleDetector.java#L71-L103)
@@ -270,3 +301,10 @@ Struktur data Directed Graph menggunakan Adjacency List untuk menyimpan hubungan
   > - **WHITE (0)**: Node belum dikunjungi.
   > - **GRAY (1)**: Node sedang diproses dalam stack aktif. Jika saat DFS kami menemui node berstatus GRAY, artinya ada jalur memutar balik (back-edge) ke node yang sedang aktif diproses, yang berarti **siklus terdeteksi**.
   > - **BLACK (2)**: Node telah selesai diproses sepenuhnya beserta seluruh jalurnya."*
+
+### 4. Pertanyaan: *"Di mana Anda menerapkan pilar OOP (seperti Enkapsulasi & Polimorfisme) dalam kode program Anda?"*
+* **Jawaban:**
+  > *"Buka file [Topic.java](file:///c:/Users/riezc/Documents/Kuliah/Mata%20Kuliah/Struktur%20Data/FP%20STRUKDAT%202/src/model/Topic.java). Penerapan OOP kami fokuskan pada pemodelan objek:
+  > 1. **Enkapsulasi:** Semua variabel di kelas `Topic` dideklarasikan `private` (baris 10-15) dan dibatasi aksesnya dengan *getter* publik di bagian bawah (baris 38-43).
+  > 2. **Polimorfisme (Overloading):** Kami melakukan overloading konstruktor (baris 17-36) agar objek topik bisa dibuat secara fleksibel.
+  > 3. **Polimorfisme (Overriding):** Di baris 45-48, kami meng-override fungsi `toString()` agar format print objek rapi dan dapat dimodifikasi sendiri."*
