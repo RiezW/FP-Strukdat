@@ -285,6 +285,154 @@ public class Topic {
 
 ---
 
+## 💻 BAGIAN 5: MAPPING MENU UTAMA & BLOCK CODE (MAIN.JAVA)
+Setiap pilihan menu pada program utama dipetakan ke method tertentu di dalam file [Main.java](file:///c:/Users/riezc/Documents/Kuliah/Mata%20Kuliah/Struktur%20Data/FP%20STRUKDAT%202/src/Main.java). Berikut detail pemetaan menu beserta potongan kode fungsinya:
+
+### Menu 1: Cari topik berdasarkan prefix
+* **Method Pendukung:** `featureSearchByPrefix()`
+* **Lokasi Kode:** [Main.java L111-143](file:///c:/Users/riezc/Documents/Kuliah/Mata%20Kuliah/Struktur%20Data/FP%20STRUKDAT%202/src/Main.java#L111-L143)
+* **Potongan Kode:**
+```java
+    static void featureSearchByPrefix() {
+        System.out.print("Masukkan kata kunci / prefix: ");
+        String prefix = scanner.nextLine().trim();
+        // ... validasi kosong ...
+        List<Topic> results = trie.searchByPrefix(prefix);
+        // ... print hasil & tawarkan tampilkan prasyarat ...
+    }
+```
+
+---
+
+### Menu 2: Tampilkan prasyarat sebuah topik
+* **Method Pendukung:** `featureShowPrerequisites()`
+* **Lokasi Kode:** [Main.java L149-172](file:///c:/Users/riezc/Documents/Kuliah/Mata%20Kuliah/Struktur%20Data/FP%20STRUKDAT%202/src/Main.java#L149-L172)
+* **Potongan Kode:**
+```java
+    static void featureShowPrerequisites() {
+        // ... cetak daftar topik & minta input nomor ...
+        String selectedId = ids.get(idx);
+        dfs.showAllPrerequisites(selectedId); // Tampilkan prasyarat lengkap
+        System.out.println();
+        dfs.showAllDependents(selectedId);    // Tampilkan dependen lengkap
+    }
+```
+
+---
+
+### Menu 3: Rekomendasikan urutan belajar
+* **Method Pendukung:** `featureLearningOrder()`
+* **Lokasi Kode:** [Main.java L178-202](file:///c:/Users/riezc/Documents/Kuliah/Mata%20Kuliah/Struktur%20Data/FP%20STRUKDAT%202/src/Main.java#L178-L202)
+* **Potongan Kode:**
+```java
+    static void featureLearningOrder() {
+        boolean hasCycle = cycleDetector.detectCycle(); // Cek siklus terlebih dahulu
+        if (!hasCycle) {
+            // ... cetak daftar topik & minta input ID target ...
+            topoSort.sortForTopic(target); // Cari path ke topik tujuan
+        }
+    }
+```
+
+---
+
+### Menu 4: Deteksi siklus prasyarat
+* **Method Pendukung:** `featureDetectCycle()`
+* **Lokasi Kode:** [Main.java L208-221](file:///c:/Users/riezc/Documents/Kuliah/Mata%20Kuliah/Struktur%20Data/FP%20STRUKDAT%202/src/Main.java#L208-L221)
+* **Potongan Kode:**
+```java
+    static void featureDetectCycle() {
+        System.out.println("\n=== DETEKSI SIKLUS PRASYARAT ===");
+        cycleDetector.detectCycle(); // Memanggil kelas CycleDetector
+        // ... demo siklus buatan jika diinginkan ...
+    }
+```
+
+---
+
+### Menu 5: Tampilkan topik tidak terhubung
+* **Method Pendukung:** `featureDisconnectedTopics()`
+* **Lokasi Kode:** [Main.java L245-286](file:///c:/Users/riezc/Documents/Kuliah/Mata%20Kuliah/Struktur%20Data/FP%20STRUKDAT%202/src/Main.java#L245-L286)
+* **Potongan Kode:**
+```java
+    static void featureDisconnectedTopics() {
+        // ... inisialisasi list isolated, noPrereqs, noDependents ...
+        for (String id : graph.getTopics().keySet()) {
+            boolean hasPrereq = !graph.getPrerequisites(id).isEmpty();
+            boolean hasDep = !graph.getDependents(id).isEmpty();
+
+            if (!hasPrereq && !hasDep) {
+                isolated.add(graph.getTopic(id));
+            } else if (!hasPrereq) {
+                noPrereqs.add(graph.getTopic(id));
+            } else if (!hasDep) {
+                noDependents.add(graph.getTopic(id));
+            }
+        }
+        // ... tampilkan data terisolir, dasar, puncak, dan statistik graph ...
+    }
+```
+
+---
+
+### Menu 6: Insert data topik baru
+* **Method Pendukung:** `featureInsertData()`
+* **Lokasi Kode:** [Main.java L292-357](file:///c:/Users/riezc/Documents/Kuliah/Mata%20Kuliah/Struktur%20Data/FP%20STRUKDAT%202/src/Main.java#L292-L357)
+* **Potongan Kode:**
+```java
+    static void featureInsertData() {
+        // ... minta input data topik baru ...
+        Topic newTopic = new Topic(id, title, category, description, duration, year);
+        graph.addTopic(newTopic);
+        trie.insert(newTopic);
+
+        for (String prereqId : prerequisiteIds) {
+            graph.addPrerequisite(prereqId, id);
+        }
+    }
+```
+
+---
+
+### Menu 7: Update atau delete data
+* **Method Pendukung:** `featureUpdateOrDelete()`
+* **Lokasi Kode:** [Main.java L447-478](file:///c:/Users/riezc/Documents/Kuliah/Mata%20Kuliah/Struktur%20Data/FP%20STRUKDAT%202/src/Main.java#L447-L478)
+* **Potongan Kode:**
+```java
+    static void featureUpdateOrDelete() {
+        // Menggunakan sub-menu:
+        // 1. subFeatureUpdateTopic();        -> Main.java L480
+        // 2. subFeatureDeleteTopic();        -> Main.java L567
+        // 3. subFeatureDeletePrerequisite(); -> Main.java L595
+    }
+```
+
+---
+
+### Menu 8: Tampilkan semua data
+* **Lokasi Kode:** Dipanggil langsung di switch-case di [Main.java L72-75](file:///c:/Users/riezc/Documents/Kuliah/Mata%20Kuliah/Struktur%20Data/FP%20STRUKDAT%202/src/Main.java#L72-L75)
+* **Potongan Kode:**
+```java
+                case "8":
+                    graph.displayGraph(); // Tampilkan Adjacency List
+                    trie.displayAll();    // Tampilkan semua data di Trie
+                    break;
+```
+
+---
+
+### Menu 9: Keluar
+* **Lokasi Kode:** Dipanggil langsung di switch-case di [Main.java L76-79](file:///c:/Users/riezc/Documents/Kuliah/Mata%20Kuliah/Struktur%20Data/FP%20STRUKDAT%202/src/Main.java#L76-L79)
+* **Potongan Kode:**
+```java
+                case "9":
+                    System.out.println("\nTerima kasih telah menggunakan Library Knowledge Navigator!");
+                    running = false;
+                    break;
+```
+
+---
+
 ## 💬 SIMULASI PERTANYAAN SIDANG & CONTOH JAWABAN
 
 ### 1. Pertanyaan: *"Tunjukkan di mana letak pendeteksian siklus pada Kahn's Algorithm!"*
